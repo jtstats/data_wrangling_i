@@ -64,9 +64,112 @@ FAS_pups_absolute = read_csv(file = "C://Users//Jingyi//Desktop//Columbia_Univer
 # load from relative path
 FAS_pups_relative = read.csv(file = "./data/FAS_pups.csv")
 
+FAS_pups = janitor::clean_names(FAS_pups_relative)
+
 ```
 
 Good Try!
 
 ##Looking at data
+
+The first thing to do after importing the data (unless read_csv gives warnings) is to look at it. If there are unexpected results during data import, you’ll catch a lot of them here. In addition to printing the data, often time you can use View / view, str, head, and tail
+
+```{r look at data}
+
+#This will show the data
+litters_data
+
+#This will show the last 5 rows of data
+tail(litters_data, 5)
+
+```
+
+Another tool to use can be skimr::skim.
+
+```{r skimr::skim}
+
+skimr::skim(litters_data)
+
+```
+
+*Call View/view in R console, because this function don't work well with RMD.*
+This function will open a window (looks like excel) for you to view the dataset.
+
+##Arguments to read_*
+
+In the best case, the data are stored in the csv without any weirdness – there are no blank lines or columns, the first row is the variable name, missing values are stored in sensible ways. 
+
+When this isn’t the case, arguments to read_csv are helpful. The ones I use most frequently are:
+
+*col_names: usually TRUE. If FALSE, column names are X1, X1, … . You can also supply column names.
+*na: string vector containing character expressions for missing values.
+*skip: number of rows to skip before reading data.
+
+For example, the call below will skip the first 50 lines of data and not assume the first row are variable names:
+
+```{r read data skipping some lines}
+
+litters_data = read_csv(file = "./data/FAS_litters.csv", skip = 10, col_names = FALSE)
+
+head(litters_data)
+
+```
+
+These arguments generally work for other members of the read_* family of functions.
+
+##Parsing Columns:
+
+Skipped col_types
+
+The read_* functions will attempt to guess the data type stored in each column; by default, these guesses are based on the first 1000 rows. The guesses are also usually pretty good. 
+
+In some cases, though, you’ll want to give explicit column specifications. 
+
+```{r parsing columns}
+
+litters_data = read_csv(file = "./data/FAS_litters.csv", col_types = cols(
+  Group = col_character(),
+  `Little Number` = col_character(),
+  `GD18 weight` = col_double(),
+  `GD of Birth` = col_integer(),
+  `Pups born alive` = col_integer(),
+  `Pups dead @ birth` = col_integer(),
+  `Pups survive` = col_integer()
+))
+
+tail(litters_data)
+
+# short-hand
+
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = "ccddiiii"
+)
+
+litters_data
+
+```
+
+
+***Leanring Assessment***
+
+Repeat the data import process above for the file FAS_pups.csv. Make sure the column names are reasonable, and take some quick looks at the dataset. What happens if your specifications for column parsing aren’t reasonable (e.g. character instead of double, or vice versa)?
+
+```{r}
+
+#load the data:
+
+FAS_pups_relative = read.csv(file = "./data/FAS_pups.csv")
+
+FAS_pups = janitor::clean_names(FAS_pups_relative)
+
+# look at data
+
+head(FAS_pups)
+
+# parse
+
+pups_data = read_csv(file = "./data/FAS_pups.csv", col_types = "ciiiii")
+
+
+```
 
