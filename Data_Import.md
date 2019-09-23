@@ -487,6 +487,10 @@ features that can help prevent **mistakes and unwanted behavior**.
 
 \*\*Question: What mistakes????? What are tibbles?
 
+Tibbles are just like dataframes, but slightly different. They keep you
+from printing everything by accident. They make you type complete
+variable names.
+
 # Importing using File\>Import
 
 You can open many data files using RStudio’s drop-down menus.

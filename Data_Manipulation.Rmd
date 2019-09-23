@@ -1,0 +1,6 @@
+---
+title: "Data Manipulation with dplyr"
+author: "Jingyi"
+date: "9/23/2019"
+output: github_document
+---
