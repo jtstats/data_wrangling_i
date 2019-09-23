@@ -4,3 +4,24 @@ author: "Jingyi"
 date: "9/23/2019"
 output: github_document
 ---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# load the library
+library(tidyverse)
+
+# what is this?
+options(tibble.print_min = 3)
+
+# load datasets, parse columns and clean data names
+litters_data = read_csv("./data/FAS_litters.csv",
+  col_types = "ccddiiii")
+litters_data = janitor::clean_names(litters_data)
+
+pups_data = read_csv("./data/FAS_pups.csv",
+  col_types = "ciiiii")
+pups_data = janitor::clean_names(pups_data)
+
+```
