@@ -23,9 +23,50 @@ library(tidyverse)
 
 ## Load in a dataset
 
+*I can use library(here) and here::here("file_I_want.csv") to find where my file is.*
+
+**Never ever use setwd()**
+
 ```{r}
+
 ## reads in a dataset
 
+# Load from a relative path.
+# Question: What's the difference between read_csv and read.csv?
+litters_data = read_csv(file = "./data/FAS_litters.csv")
+
+
+## use janitor::clean_names() to clean up variable names after importing
+## This will take the column names are and convert them to lower snake case.
+
+names(litters_data)
+
+litters_data = janitor::clean_names(litters_data)
+
+names(litters_data)
+
+# Question: Why my output are not italized?
 
 ```
+
+**The package::function syntax lets you use a function from a package without loading the whole library.**
+*Figure out what is conflicted package.*
+
+***Leanring Assessment***
+
+Make sure you are able to load the FAS_pups.csv dataset. Use both absolute and relative paths. Quit R Studio and move the directory containing your project, data, and R Markdown document. Repeat the previous data import process; do both absolute and relative paths still work?
+
+```{r learning assessment #1}
+
+# load from absolute path
+FAS_pups_absolute = read_csv(file = "C://Users//Jingyi//Desktop//Columbia_University//Fall2019//P8105_Data_Science_I//Lecture In-Class Codes//Data_Wrangling_I//data_wrangling_i//Data//FAS_pups.csv")
+
+# load from relative path
+FAS_pups_relative = read.csv(file = "./data/FAS_pups.csv")
+
+```
+
+Good Try!
+
+##Looking at data
 
