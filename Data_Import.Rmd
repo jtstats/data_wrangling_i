@@ -1,13 +1,22 @@
 ---
-title: "Data_Import"
+title: "Data Import"
 author: "Jingyi"
 date: "9/22/2019"
-output: html_document
+output: github_document
 ---
 
-*1.* load the library
+I downloaded the data and created a GitHub repo + local R project.
 
-```{r}
+** How to move the datasets to my repo/directory? **
+* Is https://help.github.com/en/articles/moving-a-file-to-a-new-location correct?*
+** Follow the lecture, and just add the data files into the local R folder. **
+
+```{r setup, include = FALSE}
+
+# What does this mean?
+knitr::opts_chunk$set(echo = TRUE)
+
+# load the library
 library(tidyverse)
 
 ```
