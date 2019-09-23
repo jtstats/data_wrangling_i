@@ -321,7 +321,191 @@ head(FAS_pups)
     ## 6 #5/5/3/83/3-3   1       5      14        6       9
 
 ``` r
+skimr::skim(FAS_pups)
+```
+
+    ## Skim summary statistics
+    ##  n obs: 313 
+    ##  n variables: 6 
+    ## 
+    ## -- Variable type:factor -------------------------------
+    ##       variable missing complete   n n_unique
+    ##  litter_number       0      313 313       49
+    ##                      top_counts ordered
+    ##  #1/: 9, #10: 9, #10: 9, #2/: 9   FALSE
+    ## 
+    ## -- Variable type:integer ------------------------------
+    ##  variable missing complete   n  mean   sd p0 p25 p50 p75 p100     hist
+    ##   pd_ears      18      295 313  3.68 0.59  2   3   4   4    5 <U+2581><U+2581><U+2585><U+2581><U+2581><U+2587><U+2581><U+2581>
+    ##   pd_eyes      13      300 313 12.99 0.62 12  13  13  13   15 <U+2582><U+2581><U+2587><U+2581><U+2581><U+2582><U+2581><U+2581>
+    ##  pd_pivot      13      300 313  7.09 1.51  4   6   7   8   12 <U+2583><U+2586><U+2587><U+2583><U+2582><U+2581><U+2581><U+2581>
+    ##   pd_walk       0      313 313  9.5  1.34  7   9   9  10   14 <U+2581><U+2585><U+2587><U+2585><U+2583><U+2582><U+2581><U+2581>
+    ##       sex       0      313 313  1.5  0.5   1   1   2   2    2 <U+2587><U+2581><U+2581><U+2581><U+2581><U+2581><U+2581><U+2587>
+
+``` r
 # parse
 
 pups_data = read_csv(file = "./data/FAS_pups.csv", col_types = "ciiiii")
+
+# 
 ```
+
+Non-csv plain text files (e.g. tab delimited files) can be handled using
+read\_table. This is very similar to read\_csv, but you have to specify
+a delimiter.
+
+CSV format is great, but you’ll encounter a lot of Excel files too.
+Although you can export these to a csv, don’t – **use the readxl package
+instead\!**
+
+*The read\_excel function in this package has many of the same arguments
+as read\_csv, including col\_names, na, skip, and col\_types, and can be
+used in basically the same way.*
+
+There is also a sheet option (useful when there are multiple sheets in
+the Excel file) and the range option (when you want to read in a
+specific data rectangle).
+
+Lastly, in RStudio you can use File \> Import Dataset \> From Excel for
+a GUI interface. The code below illustrates read\_excel.
+
+``` r
+# read excel
+
+library(readxl)
+
+#Question: I ran into problem saying that my path does not exist
+#Question solved b/c I put the wrong name; hence, of course incorrect path.
+
+mlb11_data = read_excel("data/mlb11.xlsx", n_max = 20)
+
+# Notice here that with ./data or not are both OK to read the file.
+
+head(mlb11_data, 5)
+```
+
+    ## # A tibble: 5 x 12
+    ##   team   runs at_bats  hits homeruns bat_avg strikeouts stolen_bases  wins
+    ##   <chr> <dbl>   <dbl> <dbl>    <dbl>   <dbl>      <dbl>        <dbl> <dbl>
+    ## 1 Texa~   855    5659  1599      210   0.283        930          143    96
+    ## 2 Bost~   875    5710  1600      203   0.28        1108          102    90
+    ## 3 Detr~   787    5563  1540      169   0.277       1143           49    95
+    ## 4 Kans~   730    5672  1560      129   0.275       1006          153    71
+    ## 5 St. ~   762    5532  1513      162   0.273        978           57    90
+    ## # ... with 3 more variables: new_onbase <dbl>, new_slug <dbl>,
+    ## #   new_obs <dbl>
+
+The last tidyverse package for data import we’ll note is haven, which is
+used to import into R data files from SAS, Stata, and SPSS.
+
+``` r
+library(haven)
+
+pulse_data = read_sas("./data/public_pulse_data.sas7bdat")
+
+head(pulse_data, 5)
+```
+
+    ## # A tibble: 5 x 7
+    ##      ID   age Sex   BDIScore_BL BDIScore_01m BDIScore_06m BDIScore_12m
+    ##   <dbl> <dbl> <chr>       <dbl>        <dbl>        <dbl>        <dbl>
+    ## 1 10003  48.0 male            7            1            2            0
+    ## 2 10015  72.5 male            6           NA           NA           NA
+    ## 3 10022  58.5 male           14            3            8           NA
+    ## 4 10026  72.7 male           20            6           18           16
+    ## 5 10035  60.4 male            4            0            1            2
+
+You can read in data that isn’t coming as a flat file, but it’s beyond
+our current scope.
+
+\#Comparison with Base R
+
+The functions in readr are relatively new, and can be used in place of
+base R’s read.csv, read.table, and so on.
+
+The base R versions tend to be slower (very noticeably for large
+datasets), and the default options can make less sense for modern
+datasets.
+
+Meanwhile, the readr functions export tibbles, and keep characters as
+characters (instead of converting to factors …).
+
+**Learning Assesment \#3:** Import the FAS\_pups.csv dataset using
+read.csv. Compare the class of this dataset to the one produced by
+read\_csv. Try printing both in the console – what happens? After
+cleaning up the names, try accessing the Sex variable using S (e.g.,
+pups\_data$S). What happens?
+
+``` r
+# Use read.csv import dataset FAS_pups.csv
+
+FAS_pups_dot = read.csv(file = "./data/FAS_pups.csv")
+
+# Clean the data names 
+
+FAS_pups_dot = janitor::clean_names(FAS_pups_dot)
+
+# Use read_csv import dataset FAS_pups.cvs
+
+FAS_pups_underscore = read_csv(file = "./data/FAS_pups.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   `Litter Number` = col_character(),
+    ##   Sex = col_double(),
+    ##   `PD ears` = col_double(),
+    ##   `PD eyes` = col_double(),
+    ##   `PD pivot` = col_double(),
+    ##   `PD walk` = col_double()
+    ## )
+
+``` r
+# Clean the data names
+
+FAS_pups_underscore = janitor::clean_names(FAS_pups_underscore)
+
+# to view the dataset, use view(filename) in console
+
+#view(FAS_pups_dot)
+#view(FAS_pups_underscore)
+
+#FAS_pups_dot
+#FAS_pups_underscore
+
+#############
+#Question: Why I can use S to accessing sex variable?
+#############
+
+#FAS_pups_dot$S
+#FAS_pups_underscore$S
+```
+
+In short, read\_csv produces tibbles which are very similar to the base
+R data frames produced by read.csv. However, **tibbles** have some
+features that can help prevent **mistakes and unwanted behavior**.
+
+\*\*Question: What mistakes????? What are tibbles?
+
+# Importing using File\>Import
+
+You can open many data files using RStudio’s drop-down menus.
+
+To import an excel spreadsheet, for example, you can use File \> Import
+Dataset \> From Excel.
+
+This allows several import options, previews the data, and shows the
+code necessary for importing. Importing in this way will load the data
+into your current session, but you’ll have to copy the import code to
+your RMarkdown file to ensure reproducibility.
+
+This approach to importing data can be helpful when you’re getting
+started, but gaining proficiency with writing code directly will be
+helpful in the long term and is more consistent with the goals of the
+course.
+
+# Export data
+
+As a final point, you will sometimes need to export data after you have
+imported and cleaned it. The write\_\* functions in readr address this
+problem.

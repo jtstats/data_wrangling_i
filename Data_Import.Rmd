@@ -166,10 +166,121 @@ FAS_pups = janitor::clean_names(FAS_pups_relative)
 
 head(FAS_pups)
 
+skimr::skim(FAS_pups)
+
 # parse
 
 pups_data = read_csv(file = "./data/FAS_pups.csv", col_types = "ciiiii")
 
+# 
 
 ```
 
+Non-csv plain text files (e.g. tab delimited files) can be handled using read_table. This is very similar to read_csv, but you have to specify a delimiter.
+
+CSV format is great, but you’ll encounter a lot of Excel files too. Although you can export these to a csv, don’t – **use the readxl package instead!**
+
+*The read_excel function in this package has many of the same arguments as read_csv, including col_names, na, skip, and col_types, and can be used in basically the same way.*
+
+There is also a sheet option (useful when there are multiple sheets in the Excel file) and the range option (when you want to read in a specific data rectangle).
+
+Lastly, in RStudio you can use File > Import Dataset > From Excel for a GUI interface. The code below illustrates read_excel.
+
+```{r}
+
+# read excel
+
+library(readxl)
+
+#Question: I ran into problem saying that my path does not exist
+#Question solved b/c I put the wrong name; hence, of course incorrect path.
+
+mlb11_data = read_excel("data/mlb11.xlsx", n_max = 20)
+
+# Notice here that with ./data or not are both OK to read the file.
+
+head(mlb11_data, 5)
+```
+
+The last tidyverse package for data import we’ll note is haven, which is used to import into R data files from SAS, Stata, and SPSS. 
+
+```{r importing data from SAS}
+
+library(haven)
+
+pulse_data = read_sas("./data/public_pulse_data.sas7bdat")
+
+head(pulse_data, 5)
+
+```
+
+You can read in data that isn’t coming as a flat file, but it’s beyond our current scope.
+
+
+
+#Comparison with Base R
+
+The functions in readr are relatively new, and can be used in place of base R’s read.csv, read.table, and so on. 
+
+The base R versions tend to be slower (very noticeably for large datasets), and the default options can make less sense for modern datasets. 
+
+Meanwhile, the readr functions export tibbles, and keep characters as characters (instead of converting to factors …).
+
+**Learning Assesment #3:**
+Import the FAS_pups.csv dataset using read.csv. Compare the class of this dataset to the one produced by read_csv. Try printing both in the console – what happens? After cleaning up the names, try accessing the Sex variable using S (e.g., pups_data$S). What happens?
+
+
+```{r Learning Assessment #3}
+
+# Use read.csv import dataset FAS_pups.csv
+
+FAS_pups_dot = read.csv(file = "./data/FAS_pups.csv")
+
+# Clean the data names 
+
+FAS_pups_dot = janitor::clean_names(FAS_pups_dot)
+
+# Use read_csv import dataset FAS_pups.cvs
+
+FAS_pups_underscore = read_csv(file = "./data/FAS_pups.csv")
+
+# Clean the data names
+
+FAS_pups_underscore = janitor::clean_names(FAS_pups_underscore)
+
+# to view the dataset, use view(filename) in console
+
+#view(FAS_pups_dot)
+#view(FAS_pups_underscore)
+
+#FAS_pups_dot
+#FAS_pups_underscore
+
+#############
+#Question: Why I can use S to accessing sex variable?
+#############
+
+#FAS_pups_dot$S
+#FAS_pups_underscore$S
+
+```
+
+In short, read_csv produces tibbles which are very similar to the base R data frames produced by read.csv. However, **tibbles** have some features that can help prevent **mistakes and unwanted behavior**.
+
+**Question: What mistakes????? What are tibbles?
+
+# Importing using File>Import
+
+You can open many data files using RStudio’s drop-down menus.
+
+To import an excel spreadsheet, for example, you can use File > Import Dataset > From Excel.
+
+This allows several import options, previews the data, and shows the code necessary for importing. 
+Importing in this way will load the data into your current session, but you’ll have to copy the import code to your RMarkdown file to ensure reproducibility.
+ 
+This approach to importing data can be helpful when you’re getting started, but gaining proficiency with writing code directly will be helpful in the long term and is more consistent with the goals of the course.
+
+
+# Export data
+
+As a final point, you will sometimes need to export data after you have imported and cleaned it. The write_* functions in readr address this problem.
