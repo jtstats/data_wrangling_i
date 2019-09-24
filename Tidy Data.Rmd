@@ -1,0 +1,53 @@
+---
+title: "Tidy Data"
+author: "Jingyi"
+date: "9/24/2019"
+output: github_document
+---
+
+First, update tidyverse.
+This only came out a week ago.
+
+```{r}
+
+install.packages("tidyr")
+
+# Warning came back:
+
+# WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+#https://cran.rstudio.com/bin/windows/Rtools/
+#Installing package into #�C:/Users/Jingyi/Documents/R/win-library/3.6�
+#(as �lib� is unspecified)
+#also installing the dependency �lifecycle�
+
+#trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.6/lifecycle_0.1.0.zip'
+#Content type 'application/zip' length 84685 bytes (82 KB)
+#downloaded 82 KB
+
+#trying URL 'https://cran.rstudio.com/bin/windows/contrib/3.6/tidyr_1.0.0.zip'
+#Content type 'application/zip' length 1295636 bytes (1.2 MB)
+#downloaded 1.2 MB
+
+#package ‘lifecycle’ successfully unpacked and MD5 sums checked
+#package ‘tidyr’ successfully unpacked and MD5 sums checked
+
+#The downloaded binary packages are in
+#	C:\Users\Jingyi\AppData\Local\Temp\Rtmp4MLN49\downloaded_packages
+
+
+#########
+# I am not building a R package, but do I still need to do so?
+#########
+
+```
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# load the library
+library(tidyverse)
+
+```
+
